@@ -19,7 +19,10 @@ It sets permissions, fixes line endings, and configures auto-start.
 3. Download `setup.sh` from this fork and place it in the same folder as the original files.
 
 4. Open Terminal in that folder and run:
-
+```bash
+chmod +x setup.sh
+```
+then
 ```bash
 ./setup.sh
 ```
