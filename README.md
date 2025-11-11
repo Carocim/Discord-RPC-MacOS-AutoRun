@@ -18,11 +18,22 @@ It sets permissions, fixes line endings, and configures auto-start.
 
 3. Download `setup.sh` from this fork and place it in the same folder as the original files.
 
-4. Open Terminal in that folder and run:
+4. Open Terminal in that folder and follow these steps accurately:
+
+Make the main file executable
+```bash
+chmod +x ./server_macos_debug
+```
+Run the start script
+```bash
+./start.sh
+```
+
+Execute setup
 ```bash
 chmod +x setup.sh
 ```
-then
+then finally,
 ```bash
 ./setup.sh
 ```
