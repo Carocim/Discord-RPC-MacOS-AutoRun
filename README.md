@@ -1,19 +1,35 @@
-# Discord-RPC-Extension
-Discord rich presence extension with open API.
+# Discord RPC macOS Auto-Start
 
+This script helps run Discord Rich Presence on macOS automatically.  
+It sets permissions, fixes line endings, and configures auto-start.
 
-### Download
-<a href="https://chrome.google.com/webstore/detail/discord-rich-presence/agnaejlkbiiggajjmnpmeheigkflbnoo" target="_blank">Chrome</a>  
-<a href="https://addons.mozilla.org/firefox/addon/discord-rich-presence/" target="_blank">Firefox</a>
+## Quick Setup
 
-## Important!
-This extension only works in combination with the desktop application.  
-[Download Here](https://github.com/lolamtisch/Discord-RPC-Extension/releases/latest)
+1. Download the Discord RPC extension for your browser:  
+[Chrome](https://chrome.google.com/webstore/detail/discord-rich-presence/agnaejlkbiiggajjmnpmeheigkflbnoo)  
+[Firefox](https://addons.mozilla.org/firefox/addon/discord-rich-presence/)
 
-This extension does not contain any presences.
-They are added by other extensions that communicate with this extension.
-A small list can be found here:  
-[Compatible Extensions](https://github.com/lolamtisch/Discord-RPC-Extension/blob/master/docs/extensions.md)
+2. Download the original Discord RPC files from the official release:  
+[GitHub Release 0.3.0](https://github.com/lolamtisch/Discord-RPC-Extension/releases/tag/0.3.0)  
 
-## Developer
-If you want to add RPC support to one of your extensions, then check the Api documentation [here](https://github.com/lolamtisch/Discord-RPC-Extension/blob/master/docs/api.md).
+The folder should contain:  
+- `start.sh`  
+- `server_macos_debug`
+
+3. Download `setup.sh` from this fork and place it in the same folder as the original files.
+
+4. Open Terminal in that folder and run:
+
+```bash
+./setup.sh
+```
+
+The server will now run automatically every time you log in.
+
+## Verify
+
+```bash
+ps aux | grep server_macos_debug
+```
+
+If you see a process for `server_macos_debug`, it’s running.
