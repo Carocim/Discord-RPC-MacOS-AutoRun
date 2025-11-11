@@ -3,28 +3,24 @@ set -e
 
 echo "⚙️ Setting up Discord RPC on macOS..."
 
-# Get the folder where this script is located
 APP_DIR="$(cd "$(dirname "$0")" && pwd)"
 PLIST_PATH="$HOME/Library/LaunchAgents/com.discord.rpc.autorun.plist"
 
-# Ensure dos2unix is installed
-if ! command -v dos2unix &>/dev/null; then
-  echo "📦 Installing dos2unix..."
-  brew install dos2unix
-fi
-
-# Fix line endings for start.sh
 if [ -f "$APP_DIR/start.sh" ]; then
-  dos2unix "$APP_DIR/start.sh" >/dev/null 2>&1 || true
+  echo "🔧 Fixing line endings for start.sh..."
+  sed -i '' -e 's/\r$//' "$APP_DIR/start.sh"
 else
   echo "❌ Error: start.sh not found in this folder"
   exit 1
 fi
 
-# Make scripts executable
-chmod +x "$APP_DIR/start.sh" "$APP_DIR/server_macos_debug"
+if [ -f "$APP_DIR/start.sh" ] && [ -f "$APP_DIR/server_macos_debug" ]; then
+  chmod +x "$APP_DIR/start.sh" "$APP_DIR/server_macos_debug"
+else
+  echo "❌ Error: Required scripts not found in this folder"
+  exit 1
+fi
 
-# Create LaunchAgent for auto-start
 cat <<EOF > "$PLIST_PATH"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
@@ -45,7 +41,6 @@ cat <<EOF > "$PLIST_PATH"
 </plist>
 EOF
 
-# Load it into launchd
 launchctl unload "$PLIST_PATH" 2>/dev/null || true
 launchctl load "$PLIST_PATH"
 
