@@ -42,6 +42,15 @@ If you see a process for `server_macos_debug`, it's working.
 Output logs are saved in the same folder:
 - `discord-rpc.log` - Standard output
 - `discord-rpc-error.log` - Error messages
+  
+## Important: Discord App Setup
+For the RPC to work, Discord must be running. To make Discord start automatically:
+
+Open System Settings → General → Login Items & Extensions
+Click the + button under "Open at Login"
+Select Discord.app and add it
+
+Now both Discord and the RPC server will start automatically.
 
 ## Uninstall
 
