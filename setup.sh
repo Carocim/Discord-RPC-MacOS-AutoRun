@@ -9,19 +9,16 @@ PLIST_PATH="$HOME/Library/LaunchAgents/com.discord.rpc.autorun.plist"
 # Remove quarantine bit so macOS allows auto-start
 xattr -dr com.apple.quarantine "$APP_DIR" 2>/dev/null || true
 
-# Ensure required files exist
-if [ ! -f "$APP_DIR/start.sh" ] || [ ! -f "$APP_DIR/server_macos_debug" ]; then
-  echo "❌ Error: Missing files! start.sh and server_macos_debug must be in this folder."
+# Ensure server binary exists
+if [ ! -f "$APP_DIR/server_macos_debug" ]; then
+  echo "❌ Error: server_macos_debug must be in this folder."
   exit 1
 fi
 
-# Permissions
-chmod +x "$APP_DIR/start.sh" "$APP_DIR/server_macos_debug"
+# Set executable permission
+chmod +x "$APP_DIR/server_macos_debug"
 
-# Fix line endings
-sed -i '' -e 's/\r$//' "$APP_DIR/start.sh"
-
-# Create LaunchAgent plist
+# Create LaunchAgent plist that runs the server directly
 cat <<EOF > "$PLIST_PATH"
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -32,7 +29,7 @@ cat <<EOF > "$PLIST_PATH"
 
     <key>ProgramArguments</key>
     <array>
-        <string>$APP_DIR/start.sh</string>
+        <string>$APP_DIR/server_macos_debug</string>
     </array>
 
     <key>WorkingDirectory</key>
@@ -43,6 +40,12 @@ cat <<EOF > "$PLIST_PATH"
 
     <key>KeepAlive</key>
     <true/>
+
+    <key>StandardOutPath</key>
+    <string>$APP_DIR/discord-rpc.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>$APP_DIR/discord-rpc-error.log</string>
 </dict>
 </plist>
 EOF
@@ -52,4 +55,7 @@ launchctl unload "$PLIST_PATH" 2>/dev/null || true
 launchctl load "$PLIST_PATH"
 
 echo "✅ Done! Discord RPC will now auto-start every login."
+echo "📊 Logs: $APP_DIR/discord-rpc.log"
 echo "🔍 Test with: ps aux | grep server_macos_debug"
+echo ""
+echo "To uninstall: launchctl unload '$PLIST_PATH' && rm '$PLIST_PATH'"
