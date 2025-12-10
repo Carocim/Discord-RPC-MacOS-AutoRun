@@ -59,7 +59,3 @@ To remove the auto-start:
 launchctl unload ~/Library/LaunchAgents/com.discord.rpc.autorun.plist
 rm ~/Library/LaunchAgents/com.discord.rpc.autorun.plist
 ```
-
-- **One command** - Just run `./install.sh` once
-- **Better logging** - Logs go to files instead of cluttering `nohup.out`
-- **Auto-restart** - Restarts automatically if it crashes
